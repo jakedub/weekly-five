@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>New Tags</title>
+</head>
+<body>
+  <form action="/tag/add" method="post">
+      <input name="tag" placeholder="What tag would you like to add?">
+      <button type="submit">Tag</button>
+  </form>
+    <ul>
+      {{#todos}}
+        <li>
+          {{todo}}
+          <form action="/tag/remove" method="post">
+          <button type="submit" name="remove" value="{{todo}}">Remove</button>
+        </li>
+      {{/todos}}
+    </ul>
+</body>
+</html>
