@@ -1,0 +1,31 @@
+{
+  "name": "weekly-five",
+  "version": "1.0.0",
+  "description": "initial",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest ForceExit",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jakedub/weekly-five.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jakedub/weekly-five/issues"
+  },
+  "homepage": "https://github.com/jakedub/weekly-five#readme",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.4",
+    "jest": "^20.0.4",
+    "mustache": "^2.3.0",
+    "save": "^2.3.1",
+    "session": "^0.1.0",
+    "superagent": "^3.6.0",
+    "supertest": "^3.0.0"
+  }
+}
