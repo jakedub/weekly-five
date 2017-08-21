@@ -3,6 +3,15 @@ const app = express ();
 const bodyParser = require("body-parser");
 const mustacheExpress = require("mustache-express");
 
+
+
+//need here the sessions
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+}));
+
 //mustache
 app.engine("mustache", mustacheExpress());
 app.set("views", "./views")
@@ -22,3 +31,16 @@ if (require.main==="module"){
   })
 }
 module.export = app;
+
+
+//global variable for users
+let users = [];
+
+app.get("/", function(req,res){
+  res.render("index");
+})
+
+
+app.listen(3000, function(){
+  console.log("I can hear you");
+})
