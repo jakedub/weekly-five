@@ -21,8 +21,10 @@
   "dependencies": {
     "body-parser": "^1.17.2",
     "express": "^4.15.4",
+    "express-session": "^1.15.5",
     "jest": "^20.0.4",
     "mustache": "^2.3.0",
+    "mustache-express": "^1.2.5",
     "save": "^2.3.1",
     "session": "^0.1.0",
     "superagent": "^3.6.0",

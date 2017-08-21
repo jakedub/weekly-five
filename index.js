@@ -2,8 +2,7 @@ const express = require ("express");
 const app = express ();
 const bodyParser = require("body-parser");
 const mustacheExpress = require("mustache-express");
-
-
+const session = require("express-session");
 
 //need here the sessions
 app.use(session({
