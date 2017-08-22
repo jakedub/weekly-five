@@ -22,6 +22,12 @@ app.use("/register", registerController);
 app.use("/see", seeController);
 app.use("/tag", tagController);
 
+//Mongo
+const MongoClient = require("mongodb").MongoClient;
+const uri = "mongodb://localhost:27017/robots";
+const data = require("./data");
+
+//Session
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
@@ -49,8 +55,28 @@ if (require.main==="module"){
 module.export = app;
 
 
-//global variable for users
-let users = [];
+//NOTE  DO NOT UNCOMMENT
+// MongoClient.connect(uri)
+//   .then(function(db){
+//     return db.collection("users").insertMany(data.users)
+//   })
+//   .then(function(result){
+//     console.log(result);
+//   });
+
+
+//Unemployed
+app.get("/login", function(req, res){
+  MongoClient.connect(uri)
+    .then(function(db){
+      return db.collection("users").find({job:null}).toArray(function(err, doc){
+        // console.log(doc);
+        res.render("login", {users:doc});
+      }); //pulls in first present but won't work with find. Need to be able to display it
+      db.close();
+    });
+  });
+
 
 //render login page
 app.get("/", function(req,res){
@@ -58,13 +84,13 @@ app.get("/", function(req,res){
 })
 
 //check sessions
-app.use(function(req, res, next) {
-    if (typeof req.session.users === "undefined") {
-      req.session.users = [];
-      req.session.userIndex = null;
-    }
-    next();
-});
+// app.use(function(req, res, next) {
+//     if (typeof req.session.users === "undefined") {
+//       req.session.users = [];
+//       req.session.userIndex = null;
+//     }
+//     next();
+// });
 
 //check/start the server
 app.listen(3000, function(){
