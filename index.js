@@ -145,3 +145,22 @@ app.use(function(req, res, next) {
 app.listen(3000, function(){
   console.log("I can hear you");
 })
+
+//creating new user
+app.get("create/user", function (req,res) {
+  res.render ("createuser") //need a new page;
+})
+
+app.post("create/user", function (req,res){
+  let username = req.body.username
+  let password = bcrypt.hashSync(req.body.password,8); //hashes the password
+  MongoClient.connect(url)
+  .then(function(db){
+    db.collection("users")
+    .insertOne({username: username, passwordHash: password})
+    .then(function(user){
+      console.log(user);
+    })
+    db.close;
+  })
+})
