@@ -19,11 +19,13 @@
   },
   "homepage": "https://github.com/jakedub/weekly-five#readme",
   "dependencies": {
+    "bluebird": "^3.5.0",
     "body-parser": "^1.17.2",
     "express": "^4.15.4",
     "express-session": "^1.15.5",
     "jest": "^20.0.4",
     "mongodb": "^2.2.31",
+    "mongoose": "^4.10.8",
     "mustache": "^2.3.0",
     "mustache-express": "^1.2.5",
     "save": "^2.3.1",
