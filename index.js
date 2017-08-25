@@ -47,6 +47,30 @@ app.set("view engine", "mustache");
 //body parser
 app.use(bodyParser.urlencoded({extended:true}));
 
+let newUsers = [{
+  username: "bill",
+  password: "1234",
+  snippets: [{
+    title: "This is a title",
+    body: "Here is the body",
+    notes: "I might have entered a note",
+    language: "English",
+    tags: "here is a tag"
+  }]
+  }];
+
+// User.create(newUsers)
+// .then(handleSuccess)
+// .catch(handleError);
+
+function handleSuccess(result){
+  console.log(result);
+}
+
+function handleError(result){
+  console.log(result);
+  console.log("This is an error");
+}
 
 // //test
 // app.get("/hello", function(req, res){
@@ -78,10 +102,35 @@ app.get("/login", function(req, res){
     })
     });
 
-//render login page
+//render form page. should require login successful?
 app.get("/", function(req,res){
-  res.render("index");
+  res.render("form");
 })
+
+
+app.post("/", function(req,res){
+  console.log(req.body);
+  User.create({
+    username: req.body.username,
+    password: req.body.password,
+    snippets: [{
+      title: req.body.title,
+      body: req.body.body,
+      notes: req.body.notes,
+      language: req.body.language,
+      tags: req.body.tags
+    }]
+  })
+  .then(handleSuccess)
+  .catch(handleError)
+  res.redirect("/completed");
+});
+
+app.get("/completed", function(req, res){
+  return User.find()
+  .then(function(user){
+  res.render("completed", {data: user})
+});
 
 //check sessions
 app.use(function(req, res, next) {

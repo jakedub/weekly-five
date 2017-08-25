@@ -1,11 +1,11 @@
-let users = [{
+let newUsers = [{
   username: "bill",
   password: "1234",
-  snippet: [{
+  snippets: [{
     title: "This is a title",
     body: "Here is the body",
     notes: "I might have entered a note",
-    language: ["English", "Spanish", "Arabic"],
-    tags: ["Home", "Work", "Vacation"]
+    language: "English",
+    tags: "here is a tag"
   }]
-}];
+  }];

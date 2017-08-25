@@ -8,7 +8,7 @@ router.post("/login", function(req, res) {
     return user.email === req.body.email && user.password === req.body.password;
   });
   if (req.session.userIndex) {
-    res.redirect("/list");
+    res.redirect("/all");
   } else {
     req.redirect("/");
   }
