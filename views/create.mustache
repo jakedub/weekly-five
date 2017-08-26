@@ -5,10 +5,12 @@
     <title>Create User</title>
   </head>
   <body>
-    <form method="post" action="/create/user">
+    <form action="/login" method="post">
+      <label for="username">Please create your username</label>
       <input type="text" name="username" placeholder="Username" />
-      <input type="password" name="password" placeholder="password"
+      <label for="password">Please create your password</label>
+      <input type="password" name="password" placeholder="Password" />
+      <button type="submit">Submit</button>
     </form>
-
   </body>
 </html>

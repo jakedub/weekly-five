@@ -9,7 +9,6 @@ const createController = require("./controllers/create_new");
 const languageController = require("./controllers/language");
 const listController = require ("./controllers/list");
 const loginController = require ("./controllers/login");
-const registerController = require ("./controllers/register");
 const seeController = require ("./controllers/see_specific");
 const tagController = require ("./controllers/tag");
 const userController = require ("./controllers/create_user");
@@ -19,7 +18,6 @@ app.use("/create", createController);
 app.use("/language", languageController);
 app.use("/list", listController);
 app.use("/login", loginController);
-app.use("/register", registerController);
 app.use("/see", seeController);
 app.use("/tag", tagController);
 app.use("/user", userController);
@@ -38,7 +36,7 @@ const User= require("./models/user");
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: true
 }));
 
 //mustache
@@ -60,31 +58,31 @@ let newUsers = [{
     tags: "here is a tag"
   }]
   }];
-
-// User.create(newUsers)
-// .then(handleSuccess)
-// .catch(handleError);
-
-function handleSuccess(result){
-  console.log(result);
-}
-
-function handleError(result){
-  console.log(result);
-  console.log("This is an error");
-}
-
-// //test
-// app.get("/hello", function(req, res){
-//   res.json({"hello":"world"});
-// });
 //
-// if (require.main==="module"){
-//   app.listen(3000,function(){
-//     console.log("Server Started");
-//   })
+// // User.create(newUsers)
+// // .then(handleSuccess)
+// // .catch(handleError);
+//
+// function handleSuccess(result){
+//   console.log(result);
+// };
+//
+// function handleError(result){
+//   console.log(result);
+//   console.log("This is an error");
 // }
-// module.export = app;
+//
+// // //test
+app.get("/hello", function(req, res){
+  res.json({"hello":"world"});
+});
+
+if (require.main==="module"){
+  app.listen(3000,function(){
+    console.log("Server Started");
+  })
+}
+module.export = app;
 
 app.get("/login", function(req, res){
   MongoClient.connect(url)
@@ -103,13 +101,13 @@ app.get("/login", function(req, res){
     res.render("completed", {data: user})
     })
     });
-
-//render login
+//
+// //render login
 app.get("/login", function(req,res){
   res.render("login");
 })
-
-//render all for the homepage. Requires login. Todo: Needs a requirement for logging in
+//
+// //render all for the homepage. Requires login. Todo: Needs a requirement for logging in
 app.get("/home", function (req,res){
   res.render("all");
 })
@@ -129,16 +127,20 @@ app.post("/", function(req,res){
   })
   .then(handleSuccess)
   .catch(handleError)
-  res.redirect("/completed");
+  res.redirect("/home");
 });
 
-app.get("/completed", function(req, res){
-  return User.find()
-  .then(function(user){
-  res.render("completed", {data: user})
+app.get("/registration", function(req,res){
+  res.render("create")
 });
+// app.get("/completed", function(req,res){
+//   return User.find()
+//   .then(function(user){
+//     res.render("completed" {data:user})
+//   })
+// });
 
-//check sessions
+// //check sessions
 app.use(function(req, res, next) {
     if (typeof req.session.users === "undefined") {
       req.session.users = [];
@@ -147,26 +149,9 @@ app.use(function(req, res, next) {
     next();
 });
 
+
+
 //check/start the server
 app.listen(3000, function(){
   console.log("I can hear you");
-})
-
-//creating new user
-app.get("/create/user", function (req,res) {
-  res.render ("create") //need a new page;
-})
-
-app.post("/create/user", function (req,res){
-  let username = req.body.username
-  let password = bcrypt.hashSync(req.body.password,8); //hashes the password
-  MongoClient.connect(url)
-  .then(function(db){
-    db.collection("users")
-    .insertOne({username: username, passwordHash: password})
-    .then(function(user){
-      console.log(user);
-    })
-    db.close;
-  })
 })
