@@ -7,7 +7,8 @@ While the full project description can be found here, this README should be a a 
 Monday - Organizing and Testing Express Apps
 
 Tasks
-
+1. Need to create tests.
+2. Code for sessions. 
 Create an express server with routes for the following functionality:
 register as a new snippet user
 

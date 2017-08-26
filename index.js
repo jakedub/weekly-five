@@ -12,6 +12,7 @@ const loginController = require ("./controllers/login");
 const registerController = require ("./controllers/register");
 const seeController = require ("./controllers/see_specific");
 const tagController = require ("./controllers/tag");
+const userController = require ("./controllers/create_user");
 
 //Combine routes
 app.use("/create", createController);
@@ -21,6 +22,7 @@ app.use("/login", loginController);
 app.use("/register", registerController);
 app.use("/see", seeController);
 app.use("/tag", tagController);
+app.use("/user", userController);
 
 //Mongo
 const MongoClient = require("mongodb").MongoClient;
@@ -102,11 +104,15 @@ app.get("/login", function(req, res){
     })
     });
 
-//render form page. should require login successful?
-app.get("/", function(req,res){
-  res.render("form");
+//render login
+app.get("/login", function(req,res){
+  res.render("login");
 })
 
+//render all for the homepage. Requires login. Todo: Needs a requirement for logging in
+app.get("/home", function (req,res){
+  res.render("all");
+})
 
 app.post("/", function(req,res){
   console.log(req.body);
@@ -147,11 +153,11 @@ app.listen(3000, function(){
 })
 
 //creating new user
-app.get("create/user", function (req,res) {
-  res.render ("createuser") //need a new page;
+app.get("/create/user", function (req,res) {
+  res.render ("create") //need a new page;
 })
 
-app.post("create/user", function (req,res){
+app.post("/create/user", function (req,res){
   let username = req.body.username
   let password = bcrypt.hashSync(req.body.password,8); //hashes the password
   MongoClient.connect(url)
