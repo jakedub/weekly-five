@@ -101,15 +101,14 @@ app.get("/login", function(req, res){
     res.render("completed", {data: user})
     })
     });
-//
-// //render login
-app.get("/login", function(req,res){
-  res.render("login");
-})
-//
+
 // //render all for the homepage. Requires login. Todo: Needs a requirement for logging in
 app.get("/home", function (req,res){
   res.render("all");
+})
+
+app.post("/", function (req,res){
+  res.redirect("/login");
 })
 
 app.post("/", function(req,res){
@@ -127,7 +126,7 @@ app.post("/", function(req,res){
   })
   .then(handleSuccess)
   .catch(handleError)
-  res.redirect("/home");
+  res.render("/home");
 });
 
 app.get("/registration", function(req,res){
@@ -149,7 +148,47 @@ app.use(function(req, res, next) {
     next();
 });
 
+app.get('/login', function(req, res){
+  res.render('login');
+});
 
+app.post('/login', function(req, res){
+  let username = req.body.username
+  let password = req.body.password
+  MongoClient.connect(url)
+  .then(function(db){
+    db.collection('users')
+    .findOne({username: username})
+      .then(function(data){
+        db.close()
+        if(bcrypt.compareSync(password, data.passwordHash)){
+
+          res.redirect('/home');
+        } else {
+          res.send('nope')
+        }
+      })
+  })
+});
+
+app.get('/create/user', function(req, res){
+  res.render('createuser');
+});
+
+
+app.post("/create/user", function(req,res){
+  let username = req.body.username;
+  let password = bcrypt.hashSync(req.body.password, 8);
+  MongoClient.connect(url)
+  .then(function(db){
+    db.collection("users")
+    .insertOne({username: username, passwordHash: password})
+    .then(function(user){
+      console.log(user);
+    })
+    db.close();
+  })
+});
 
 //check/start the server
 app.listen(3000, function(){
