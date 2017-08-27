@@ -1,34 +1,45 @@
 // login as an existing snippet user
-
 const express = require("express");
 const router = express.Router();
 
-router.post('/auth', function(req, res){
-  let username = req.body.username;
-  let password = req.body.password;
-  console.log(req.body);
-  if (users[name] === password){
-    req.session.username = username
-    req.session.password = password
-    res.redirect('/home');
+//test
+
+
+router.get('/', function(req, res){
+  let currentUser = {};
+  currentUser.username = req.session.username
+  currentUser.password = req.session.password
+  if (typeof req.session.username !== 'undefined'){
+    res.render('login', currentUser);
   }
   else{
-    alert('A combination of username and password is incorrect')
+    console.log('redirected to login!');
     res.redirect('/login');
-    console.log("nope");
   }
 });
 
-router.post("/", function(req, res) {
-  req.session.userIndex = username.findIndex(function(user) {
-    return user.username === req.body.username && user.password === req.body.password;
-  });
-  if (req.session.userIndex) {
-    res.redirect("/all");
-  } else {
-    req.redirect("/home");
+router.get('/', function(req, res){
+  res.render('login');
+})
+
+router.post('/home', function(req, res){
+  let name = req.body.username;
+  let password = req.body.password;
+  console.log(req.body);
+  if (users[name] === password){
+    req.session.username = name
+    req.session.password = password
+    res.redirect('/');
+  }
+  else{
+    res.redirect('/login');
+    console.log('nope');
   }
 });
+
+
+
+
 
 
 

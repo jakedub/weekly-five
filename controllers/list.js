@@ -3,9 +3,12 @@
 const express = require("express");
 const router = express.Router();
 
-// app.get("/list", function(req,res){
-//   res.render("list");
-// })
+router.get("/", function(req, res) {
+  res.render("all")
+});
 
+//accept edits and new snippets. // TODO: Add code
 
 module.exports = router;
+
+//test

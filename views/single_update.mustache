@@ -1,0 +1,36 @@
+<!-- likely needs to be a single item -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Edit Page</title>
+  <link rel="stylesheet" href="main.css" >
+</head>
+<body>
+  <header>
+    <h1>This is the header</h1>
+    <span>
+      <h2>Links to other pages</h2>
+      <p><a href="/">Home</a></p>
+      <p><a href="/all">All Snippets</a></p>
+    </span>
+  </header>
+  Links here
+  <ul>
+    {{#data}}
+    <li>
+      <form method="post" action="/all">
+      <span class="main">Title</span> {{title}}
+      <br />
+      {{#snippets}}
+      Body: {{body}} <br />
+      Notes: {{notes}} <br />
+      Language: {{language}} <br />
+      Tags: {{tags}} <br />
+      {{/snippets}}
+      </form>
+    </li>
+    {{/data}}
+  </ul>
+</body>
+</html>

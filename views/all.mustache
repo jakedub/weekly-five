@@ -3,13 +3,18 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Completed Form</title>
+  <title>All Page</title>
   <link rel="stylesheet" href="main.css" >
 </head>
 <body>
   <header>
     <h1>This is the header</h1>
   </header>
+  <span>
+    <h2>Links to other pages</h2>
+    <p><a href="/">Home</a></p>
+    <p><a href="/form">Create New Snippets</a></p>
+  </span>
   <ul>
     {{#data}}
     <li>
@@ -20,8 +25,8 @@
       <a href="/single_update">Edit Snippet</a>ß
       Body: {{body}} <br />
       Notes: {{notes}} <br />
-      Language: {{language}} <br />
-      Tags: {{tags}} <br />
+      <a href="/language">Language: {{language}} </a><br />
+      <a href="/tags">Tags: {{tags}} </a>
       {{/snippets}}
     </li>
     {{/data}}

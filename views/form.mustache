@@ -6,7 +6,12 @@
   </head>
   <body>
     <h1>Input Form</h1>
-    <form action="/" method="post">
+    <span>
+      <h2>Links to other pages</h2>
+      <p><a href="/">Home</a></p>
+      <p><a href="/all">All Snippets</a></p>
+    </span>
+    <form action="/all" method="post">
       <fieldset>
         <legend>Snippets</legend>
         <label for="title">Title</label>
@@ -19,7 +24,6 @@
         <label for="print">German</label>
         <input type="radio" name="language" id="german" value="German" />
         <input type="text" name="tags" placeholder="Tags" />
-
   </fieldset>
   <button type="submit" name="marked">Create</button>
   </body>

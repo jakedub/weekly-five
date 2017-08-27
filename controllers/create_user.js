@@ -3,8 +3,8 @@ const express = require("express");
 const router = express.Router();
 
 
-router.get('/', function(req, res){
-  res.render('createuser');
+router.get("/registration", function(req,res){
+  res.render("create")
 });
 
 router.post('/', function(req, res){
@@ -20,5 +20,8 @@ router.post('/', function(req, res){
     db.close();
   });
 });
+
+
+
 
 module.exports = router;

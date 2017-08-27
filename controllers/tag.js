@@ -5,7 +5,9 @@ const router = express.Router();
 
 
 //needs for add
-
+router.get('/tags', function(req,res){
+  res.render('tags');
+})
 //needs for remove
 
 module.exports = router;

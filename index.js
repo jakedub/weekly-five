@@ -45,8 +45,10 @@ app.set("views", "./views")
 app.set("view engine", "mustache");
 
 //body parser
-app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
+//added in someone to the database to begin
 let newUsers = [{
   username: "bill",
   password: "1234",
@@ -58,7 +60,7 @@ let newUsers = [{
     tags: "here is a tag"
   }]
   }];
-//
+//Do NOT run
 // // User.create(newUsers)
 // // .then(handleSuccess)
 // // .catch(handleError);
@@ -71,18 +73,56 @@ let newUsers = [{
 //   console.log(result);
 //   console.log("This is an error");
 // }
-//
-// // //test
-app.get("/hello", function(req, res){
-  res.json({"hello":"world"});
+
+//store in session
+app.get('/', function(req, res){
+  let myUser = {};
+  myUser.username = req.session.username
+  myUser.password = req.session.password
+  if (typeof req.session.username !== 'undefined'){
+    res.render('index', myUser);
+  }
+  else{
+    console.log('redirected to login!');
+    res.redirect('/login');
+  }
 });
 
-if (require.main==="module"){
-  app.listen(3000,function(){
-    console.log("Server Started");
-  })
+
+//render login page
+app.get('/login', function(req, res){
+  res.render('login');
+})
+
+//user authentication
+app.post('/login/home', function(req, res){
+  let username = req.body.username;
+  let password = req.body.password;
+  console.log(req.body);
+  if (newUsers[username] === password){
+    req.session.username = username
+    req.session.password = password
+    res.redirect('/home');
+  }
+  else{
+    res.redirect('/login');
+    console.log('somethings broken');
+  }
+});
+
+//testing
+
+app.get('/hello', function (req, res) {
+  res.json({"hello": "world"})
+})
+
+if (require.main === "module") {
+  app.listen(3000, function () {
+      console.log('Express running on http://localhost:3000/.')
+  });
 }
-module.export = app;
+
+module.exports = app;
 
 app.get("/login", function(req, res){
   MongoClient.connect(url)
@@ -102,7 +142,7 @@ app.get("/login", function(req, res){
     })
     });
 
-// //render all for the homepage. Requires login. Todo: Needs a requirement for logging in
+// //render homepage
 app.get("/home", function (req,res){
   res.render("all");
 })
@@ -111,6 +151,7 @@ app.post("/", function (req,res){
   res.redirect("/login");
 })
 
+//should be creating
 app.post("/", function(req,res){
   console.log(req.body);
   User.create({
@@ -129,9 +170,6 @@ app.post("/", function(req,res){
   res.render("/home");
 });
 
-app.get("/registration", function(req,res){
-  res.render("create")
-});
 // app.get("/completed", function(req,res){
 //   return User.find()
 //   .then(function(user){
@@ -171,24 +209,6 @@ app.post('/login', function(req, res){
   })
 });
 
-app.get('/create/user', function(req, res){
-  res.render('createuser');
-});
-
-
-app.post("/create/user", function(req,res){
-  let username = req.body.username;
-  let password = bcrypt.hashSync(req.body.password, 8);
-  MongoClient.connect(url)
-  .then(function(db){
-    db.collection("users")
-    .insertOne({username: username, passwordHash: password})
-    .then(function(user){
-      console.log(user);
-    })
-    db.close();
-  })
-});
 
 //check/start the server
 app.listen(3000, function(){
