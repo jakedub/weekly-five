@@ -13,15 +13,12 @@ router.post("/", function(req,res){
   User.create({
     snippets: [{
       title: req.body.title,
-      body: req.body.body,
-      notes: req.body.notes,
       language: req.body.language,
-      tags: req.body.tags
     }]
   })
   .then(handleSuccess)
   .catch(handleError)
-  res.render("/home");
+  res.render("/language");
 });
 
 function handleSuccess(result) {

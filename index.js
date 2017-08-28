@@ -3,7 +3,7 @@ const app = express ();
 const bodyParser = require("body-parser");
 const mustacheExpress = require("mustache-express");
 const session = require("express-session");
-
+const morgan = require("morgan");
 //Controllers
 const createController = require("./controllers/create_new");
 const languageController = require("./controllers/language");
@@ -11,7 +11,7 @@ const listController = require ("./controllers/list");
 const loginController = require ("./controllers/login");
 const seeController = require ("./controllers/see_specific");
 const tagController = require ("./controllers/tag");
-const userController = require ("./controllers/create_user");
+const userController = require ("./controllers/register");
 
 //Combine routes
 app.use("/create", createController);
@@ -20,7 +20,14 @@ app.use("/list", listController);
 app.use("/login", loginController);
 app.use("/see", seeController);
 app.use("/tag", tagController);
-app.use("/user", userController);
+app.use("/register", userController);
+
+//morgan
+app.use(morgan('combined'))
+
+app.get('/', function (req, res) {
+  res.send('hello, world!')
+})
 
 //Mongo
 const MongoClient = require("mongodb").MongoClient;
@@ -95,7 +102,7 @@ app.get('/login', function(req, res){
 })
 
 //user authentication
-app.post('/login/home', function(req, res){
+app.post('/home', function(req, res){
   let username = req.body.username;
   let password = req.body.password;
   console.log(req.body);
@@ -209,6 +216,18 @@ app.post('/login', function(req, res){
   })
 });
 
+app.get('/', function(req, res){
+  let currentUser = {};
+  currentUser.username = req.session.username
+  currentUser.password = req.session.password
+  if (typeof req.session.username !== 'undefined'){
+    res.render('login', currentUser);
+  }
+  else{
+    console.log('redirected to login!');
+    res.redirect('/login');
+  }
+});
 
 //check/start the server
 app.listen(3000, function(){
