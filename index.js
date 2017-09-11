@@ -25,10 +25,6 @@ app.use("/register", userController);
 //morgan
 app.use(morgan('combined'))
 
-app.get('/', function (req, res) {
-  res.send('hello, world!')
-})
-
 //Mongo
 const MongoClient = require("mongodb").MongoClient;
 const url = "mongodb://localhost:27017/users";
@@ -82,7 +78,7 @@ let newUsers = [{
 // }
 
 //store in session
-app.get('/', function(req, res){
+app.get('/login', function(req, res){
   let myUser = {};
   myUser.username = req.session.username
   myUser.password = req.session.password
@@ -95,6 +91,17 @@ app.get('/', function(req, res){
   }
 });
 
+app.get("/home", function(req ,res) {
+  MongoClient.connect(url , function(err, db) {
+    console.log("Connected to MongoDB");
+    let users = db.collection('users');
+    snippets.find().toArray()
+      .then(function(docs) {
+        res.render('home', {data: docs});
+      });
+      db.close();
+  });
+});
 
 //render login page
 app.get('/login', function(req, res){
@@ -117,20 +124,17 @@ app.post('/home', function(req, res){
   }
 });
 
-//testing
-
-app.get('/hello', function (req, res) {
-  res.json({"hello": "world"})
+app.post('/home', function(req, res){
+  MongoClient.connect(url)
+  .then db.collection("users").findOne({
+    req.session.usesrname
+  }).toArray(function(err, doc){
+    res.render("login", {data:docu});
+  })
+  db.close();
 })
 
-if (require.main === "module") {
-  app.listen(3000, function () {
-      console.log('Express running on http://localhost:3000/.')
-  });
-}
-
-module.exports = app;
-
+//testing
 app.get("/login", function(req, res){
   MongoClient.connect(url)
     .then(function(db){
@@ -159,11 +163,9 @@ app.post("/", function (req,res){
 })
 
 //should be creating
-app.post("/", function(req,res){
+app.post("/create", function(req,res){
   console.log(req.body);
   User.create({
-    username: req.body.username,
-    password: req.body.password,
     snippets: [{
       title: req.body.title,
       body: req.body.body,
@@ -174,7 +176,7 @@ app.post("/", function(req,res){
   })
   .then(handleSuccess)
   .catch(handleError)
-  res.render("/home");
+  res.render("all");
 });
 
 // app.get("/completed", function(req,res){
